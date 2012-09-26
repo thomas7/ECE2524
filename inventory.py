@@ -62,10 +62,7 @@ def list_funct(arg):
                         writer.writerow(item)
             if arg.find("sort") > 0:
                 (beginning,  sort,  field)  = arg.partition(" sort by ")
-                if field == "Quantity":
-                    sortedList = sorted(dictList,  key =  itemgetter(field)
-                else:
-                    sortedList = sorted(dictList,  key = itemgetter(field)
+                sortedList = sorted(dictList,  key = itemgetter(field))
                 writer.writeheader()
                 writer.writerows(sortedList)
         except KeyError as e:
