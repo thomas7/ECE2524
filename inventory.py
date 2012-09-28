@@ -19,16 +19,16 @@ def add_funct(arg):
     print "The item was added successfully"
     
 def del_funct(arg):
+    global dictList
     deleteCheck = False
+    initialLength = len(dictList)
     (field, equal,  value) = arg.partition("=")
-    for item in dictList:
-        print item[field]
-        if item[field] == value:
-            deleteCheck = True
-            print "got inside if loop"
-            del dictList[dictList.index(item)]
-            print "The item with value: {} in field: {} was deleted".format(value,  field)
-    if deleteCheck == False:
+    dictList = [r for r in dictList if r[field] != value]
+    if initialLength > len(dictList):
+        deleteCheck=True
+    if deleteCheck == True:
+        print "The item with value: {} in field: {} was deleted".format(value,  field)
+    else:
         print "The item with value: {} in field: {} was not found, so nothing was deleted".format(value, field)
         
 def set_funct(arg):
@@ -43,7 +43,7 @@ def set_funct(arg):
                 dictList[dictList.index(item)][fieldChange] = changeValue
                 print "The item has been updated"
     except KeyError as e:
-        sys.stderr.write("{} or {} is not a valid field name\n".format(fieldChange,  fieldSet))
+        print "{} or {} is not a valid field name\n".format(fieldChange,  fieldSet)
     
 def list_funct(arg):
     writer = csv.DictWriter(sys.stdout,  fieldnames = dictList[0].keys(),  delimiter='|')
@@ -66,7 +66,7 @@ def list_funct(arg):
                 writer.writeheader()
                 writer.writerows(sortedList)
         except KeyError as e:
-            sys.stderr.write("{} is not a valid field name\n".format(field))
+            print "{} is not a valid field name\n".format(field)
 
 #Read in file and store in list of Dictionaries
 try:
@@ -75,7 +75,7 @@ try:
         for row in reader:
             dictList.append(row)
 except IOError as e:
-    sys.stderr.write("The file at the path: {} was not found".format(args.dataFile))
+    print "The file at the path: {} was not found".format(args.dataFile)
     sys.exit(1)
 
 #process commands entered on standard in
@@ -87,7 +87,7 @@ for data in iter(sys.stdin.readline,  ''):
     try:
         caseDict[action](modifier)
     except KeyError as e:
-        sys.stderr.write("The command {} was not recognized\n".format(action))
+        print "The command {} was not recognized\n".format(action)
     
 #Write list of dictionaries back to file
 with open(args.dataFile,  'wb') as outFile:

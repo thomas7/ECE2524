@@ -1,1 +1,3 @@
-test test2
+list all
+add {'Footprint': '1000', 'Description': 'Added New Part', 'PartID': 'R4700', 'Quantity': 2}
+list all

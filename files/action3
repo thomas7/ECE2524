@@ -1,0 +1,3 @@
+set Footprint=2222 for PartID=R67811
+list all
+set Size=5 for PartID=R67817
